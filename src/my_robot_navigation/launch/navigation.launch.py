@@ -60,10 +60,17 @@ def generate_launch_description():
             'subscribe_rgb': True,
             'subscribe_odom_info': False,
             'approx_sync': True,
-            'wait_for_transform': 0.2,
+            'wait_for_transform': 0.5,
             'use_sim_time': use_sim_time,
-            'queue_size': 10,
-            # RTAB-Map database location (optional: set to empty string to not save)
+            'sync_queue_size': 30,
+            'topic_queue_size': 30,
+            # QoS = 1 → BEST_EFFORT to match the ZED wrapper's publisher QoS.
+            'qos_image': 1,
+            'qos_camera_info': 1,
+            # Odometry from TF (odom->base_link), NOT from a topic.
+            # This avoids timestamp sync issues between odom and image topics.
+            'subscribe_odom': False,
+            # RTAB-Map database location
             'database_path': '~/.ros/rtabmap.db',
             # Grid map parameters
             'Grid/FromDepth': 'true',
@@ -74,9 +81,9 @@ def generate_launch_description():
             'Vis/MaxFeatures': '500',
         }],
         remappings=[
-            ('odom', '/odometry/local'),
-            ('rgb/image', '/zed/zed_node/rgb/image_rect_color'),
-            ('rgb/camera_info', '/zed/zed_node/rgb/camera_info'),
+            # RGB + Depth from ZED — no odom remap, using TF instead
+            ('rgb/image', '/zed/zed_node/rgb/color/rect/image'),
+            ('rgb/camera_info', '/zed/zed_node/rgb/color/rect/camera_info'),
             ('depth/image', '/zed/zed_node/depth/depth_registered'),
         ],
     )

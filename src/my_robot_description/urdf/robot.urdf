@@ -236,7 +236,7 @@
       <param name="max_motor_speed_rad_s">10.0</param>
       <!-- Set to 'true' to run without the ESP32 (bench / CI testing).
            Commands are accepted but not sent to any serial port. -->
-      <param name="use_mock_hardware">false</param>
+      <param name="use_mock_hardware">true</param>
     </hardware>
 
     <!-- LEFT side: represents all 3 left motors (ESP32 fans out) -->
