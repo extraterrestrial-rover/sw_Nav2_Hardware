@@ -1,0 +1,7 @@
+image: /home/ajitesh/nav2_hardware_ws/src/my_robot_navigation/maps/rtabmap.pgm
+resolution: 0.05
+origin: [-7.16174, -8.0117, 0.0]
+negate: 0
+occupied_thresh: 0.5
+free_thresh: 0.196
+

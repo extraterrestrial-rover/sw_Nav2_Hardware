@@ -3,55 +3,55 @@ ekf_local:
     use_sim_time: false
     frequency: 30.0
     two_d_mode: true
-    # ── IMPORTANT ──────────────────────────────────────────────────────────────
-    # We let EKF publish the odom->base_footprint TF.
-    # The ZED wrapper will be launched with `publish_tf:=false`.
-    # This prevents the ZED wrapper from publishing odom->zed_camera_link which
-    # would break the TF tree (since robot_state_publisher already publishes
-    # base_link->zed_camera_link). EKF correctly calculates and publishes the
-    # root TF.
+    # ── TF PUBLISHING ─────────────────────────────────────────────────────────────
+    # EKF publishes the odom->base_footprint TF.
+    # ZED wrapper is launched with publish_tf:=false to avoid conflicts.
+    # RTAB-Map publishes map->odom TF.
+    # Full chain: map (RTAB-Map) -> odom (EKF) -> base_footprint -> base_link -> zed_camera_link
     publish_tf: true
-    
+
     map_frame: map
     odom_frame: odom
     base_link_frame: base_footprint
     world_frame: odom
 
-    # ── LAPTOP / ZED-ONLY MODE ────────────────────────────────────────────────
-    # When testing with only the ZED2i camera (no ESP32 / real wheel encoders),
-    # use ZED visual odometry as the primary odometry source.
-    # The ZED SDK already fuses its IMU internally for a good VIO estimate.
+    # ── SIMULATION / MOCK HARDWARE MODE (active now) ──────────────────────────
+    # ZED visual-inertial odometry is used because the mock diff_drive_controller
+    # publishes zero velocities (no real encoders), making it useless for fusion.
+    # The ZED SDK fuses its IMU internally for a good VIO estimate.
     odom0: /zed/zed_node/odom
-    odom0_config: [true,  true,  false,   # x, y position (trust ZED VIO)
-                   false, false, true,    # roll, pitch, yaw
-                   true,  false, false,   # vx, vy, vz
-                   false, false, true,    # vroll, vpitch, vyaw
+    odom0_config: [true,  true,  false,   # x, y position — trusted from ZED VIO
+                   false, false, true,    # yaw — trusted
+                   true,  false, false,   # vx — trusted
+                   false, false, true,    # vyaw — trusted
                    false, false, false]   # ax, ay, az
     odom0_differential: false
 
-    # ── REAL HARDWARE MODE ────────────────────────────────────────────────────
-    # When the ESP32 is connected, uncomment the block below and comment out
-    # the ZED odom block above. Wheel odometry gives reliable forward velocity
-    # and the ZED IMU adds yaw rate for fusion.
+    # ── REAL HARDWARE MODE (switch to this when ESP32 is connected) ───────────
+    # Uncomment below and comment out the block above when using real encoders.
     #
     # odom0: /diff_drive_controller/odom
     # odom0_config: [false, false, false,
     #                false, false, false,
-    #                true,  false, false,
-    #                false, false, true,
+    #                true,  false, false,   # vx only
+    #                false, false, true,    # vyaw only
     #                false, false, false]
+    # odom0_differential: false
     #
     # imu0: /zed/zed_node/imu/data
     # imu0_config: [false, false, false,
     #               false, false, false,
     #               false, false, false,
-    #               false, false, true,
-    #               true,  true,  false]
+    #               false, false, true,    # vyaw from gyro
+    #               true,  true,  false]   # ax, ay
+    # imu0_differential: false
+    # imu0_remove_gravitational_acceleration: true
 
 navsat_transform:
   ros__parameters:
     use_sim_time: false
-    magnetic_declination_radians: 0.0 # Set based on your geographical location
+    magnetic_declination_radians: 0.0
     yaw_offset: 0.0
     zero_altitude: true
     publish_filtered_gps: true
+

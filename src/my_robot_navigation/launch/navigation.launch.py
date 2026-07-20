@@ -112,34 +112,22 @@ def generate_launch_description():
         # condition=IfCondition(LaunchConfiguration('rtabmap_viz', default='false')),
     )
 
-    # ── 4. Robot Localization (Sensor Fusion) ───────────────────────────────────
+    # ── 4. Robot Localization (EKF Sensor Fusion) ───────────────────────────────
+    # Fuses: wheel odometry (/diff_drive_controller/odom) + ZED IMU
+    # Publishes: /odometry/filtered  AND  odom→base_footprint TF
     ekf_local = Node(
         package='robot_localization',
         executable='ekf_node',
         name='ekf_local',
         output='screen',
         parameters=[ekf_params_file],
-        remappings=[('odometry/filtered', '/odometry/local')]
-    )
-
-    navsat_transform = Node(
-        package='robot_localization',
-        executable='navsat_transform_node',
-        name='navsat_transform',
-        output='screen',
-        parameters=[ekf_params_file],
-        remappings=[
-            ('imu', '/zed/zed_node/imu/data'),
-            ('gps/fix', '/gps/fix'),
-            ('odometry/filtered', '/odometry/local')
-        ]
+        remappings=[('odometry/filtered', '/odometry/filtered')]
     )
 
     return LaunchDescription([
         use_sim_time_arg,
         camera_model_arg,
         ekf_local,
-        navsat_transform,
         nav2,
         rtabmap,
         # Uncomment rtabmap_viz below if you want the RTAB-Map visualization window:

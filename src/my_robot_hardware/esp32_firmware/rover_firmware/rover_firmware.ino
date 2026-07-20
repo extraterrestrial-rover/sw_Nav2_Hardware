@@ -35,24 +35,24 @@
 // ── Middle wheel reduction during mixed motion (0.0 - 1.0) ──────────────────
 // The middle wheel scrubs more on a 6-wheel rover. Reduce its power to ease
 // turning. Set to 1.0 to disable.
-#define MIDDLE_RATIO  0.6f
+#define MIDDLE_RATIO  0.857f  // 6/7 ratio, matches original tested firmware
 
 // ════════════════════════════════════════════════════════════════════════════
 //  GPIO PIN ASSIGNMENTS  —  ADJUST TO MATCH YOUR PCB
 // ════════════════════════════════════════════════════════════════════════════
 // Each entry: {DIR_pin, PWM_pin}
 
-// Motor Driver 1
-const uint8_t LEFT_FRONT[]  = {26, 25};   // DIR=GPIO26, PWM=GPIO25
-const uint8_t LEFT_BACK[]   = {33, 32};   // DIR=GPIO33, PWM=GPIO32
+// Motor Driver 1  (verified hardware pins)
+const uint8_t LEFT_FRONT[]  = {19, 21};   // DIR=GPIO19, PWM=GPIO21
+const uint8_t LEFT_BACK[]   = {22, 23};   // DIR=GPIO22, PWM=GPIO23
 
-// Motor Driver 2
-const uint8_t LEFT_MID[]    = {14, 27};   // DIR=GPIO14, PWM=GPIO27
-const uint8_t RIGHT_MID[]   = {12, 13};   // DIR=GPIO12, PWM=GPIO13
+// Motor Driver 2  (verified hardware pins)
+const uint8_t LEFT_MID[]    = {33, 32};   // DIR=GPIO33, PWM=GPIO32
+const uint8_t RIGHT_MID[]   = {26, 25};   // DIR=GPIO26, PWM=GPIO25
 
-// Motor Driver 3
-const uint8_t RIGHT_FRONT[] = {19, 18};   // DIR=GPIO19, PWM=GPIO18
-const uint8_t RIGHT_BACK[]  = {17, 16};   // DIR=GPIO17, PWM=GPIO16
+// Motor Driver 3  (verified hardware pins)
+const uint8_t RIGHT_FRONT[] = {13, 12};   // DIR=GPIO13, PWM=GPIO12
+const uint8_t RIGHT_BACK[]  = {14, 27};   // DIR=GPIO14, PWM=GPIO27
 // ════════════════════════════════════════════════════════════════════════════
 
 // ── ESP32 LEDC PWM channels (0-15, each channel used by one PWM pin) ────────
