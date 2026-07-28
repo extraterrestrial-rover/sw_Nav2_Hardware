@@ -16,13 +16,13 @@
  *   Motor Driver 1 → Left Front  + Left Back
  *   Motor Driver 2 → Left Middle + Right Middle
  *   Motor Driver 3 → Right Front + Right Back
- *
+ *h
  * Each motor channel: one DIR pin (digital) + one PWM pin (analogWrite)
  *   DIR = LOW  → forward
  *   DIR = HIGH → backward
  *   PWM = 0-255 → speed
  *
- * IMPORTANT: Adjust the pin definitions below to match your PCB!
+ * IMPORTANT: Adjust the pin definitions below to matc your PCB!
  * ──────────────────────────────────────────────────────────────
  * The pin assignments below are suggestions — verify against your schematic.
  */

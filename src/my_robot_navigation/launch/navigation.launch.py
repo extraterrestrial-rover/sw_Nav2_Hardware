@@ -65,8 +65,9 @@ def generate_launch_description():
             'sync_queue_size': 30,
             'topic_queue_size': 30,
             # QoS = 1 → BEST_EFFORT to match the ZED wrapper's publisher QoS.
-            'qos_image': 1,
-            'qos_camera_info': 1,
+            # QoS = 2 → BEST_EFFORT to match the ZED wrapper's publisher QoS.
+            'qos_image': 2,
+            'qos_camera_info': 2,
             # Odometry from TF (odom->base_link), NOT from a topic.
             # This avoids timestamp sync issues between odom and image topics.
             'subscribe_odom': False,

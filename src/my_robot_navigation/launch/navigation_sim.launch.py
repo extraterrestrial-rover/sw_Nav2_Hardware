@@ -105,8 +105,8 @@ def generate_launch_description():
             'use_sim_time': False,
             'sync_queue_size': 30,
             'topic_queue_size': 30,
-            'qos_image': 1,
-            'qos_camera_info': 1,
+            'qos_image': 2,
+            'qos_camera_info': 2,
             'database_path': '~/.ros/rtabmap.db',
             # ── LOCALIZATION only — do NOT grow the map ─────────────────────────
             'Mem/IncrementalMemory': 'false',
