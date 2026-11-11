@@ -239,6 +239,17 @@ hardware_interface::return_type SerialHardwareInterface::write(
   left_pwm  = std::clamp(left_pwm,  -255, 255);
   right_pwm = std::clamp(right_pwm, -255, 255);
 
+  if (left_pwm==-1*right_pwm){
+    if (left_pwm>0){
+      left_pwm = 200;
+      right_pwm = -200;
+    }
+    else{
+      left_pwm = -200;
+      right_pwm = 200;
+    }
+  }
+
   if (!send_command(left_pwm, right_pwm)) {
     RCLCPP_WARN_THROTTLE(
       rclcpp::get_logger("SerialHardwareInterface"),
